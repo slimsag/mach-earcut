@@ -26,21 +26,24 @@ This is an _experimental_ Mach library, according to our [stability guarantees](
 
 ### Adding dependency
 
-In a `libs` subdirectory of the root of your project:
-
-```sh
-git clone https://github.com/hexops/mach-earcut
+Create a `build.zig.zon` and add this to the `dependencies` section:
+```zig
+.mach_earcut = .{
+    .url = "https://github.com/hexops/mach-earcut/archive/<latest commit hash>.tar.gz",
+    .hash = "<get the hash by running zig build without the hash field>",
+}
 ```
 
 Then in your `build.zig` add:
 
 ```zig
 ...
-const earcut = @import("libs/mach-earcut/build.zig");
-
 pub fn build(b: *Build) void {
     ...
-    exe.addModule("earcut", earcut.module(b));
+    exe.addModule("earcut", b.dependency("mach_earcut", .{
+        .target = target,
+        .optimize = optimize,
+    }).module("mach-earcut"));
 }
 ```
 
