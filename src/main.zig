@@ -342,7 +342,7 @@ pub fn Processor(comptime T: type) type {
                 try queue.append(allocator, p.getLeftmost(list));
             }
 
-            std.sort.sort(NodeIndex, queue.items, p, compareX);
+            std.sort.pdq(NodeIndex, queue.items, p, compareX);
 
             // process holes from left to right
             i = 0;
