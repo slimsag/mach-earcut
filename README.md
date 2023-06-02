@@ -26,28 +26,40 @@ This is an _experimental_ Mach library, according to our [stability guarantees](
 
 ### Adding dependency
 
-Create a `build.zig.zon` and add this to the `dependencies` section:
-```zig
-.mach_earcut = .{
-    .url = "https://github.com/hexops/mach-earcut/archive/<latest commit hash>.tar.gz",
-    .hash = "<get the hash by running zig build without the hash field>",
+Create a `build.zig.zon` file in your project (replace `$LATEST_COMMIT` with the latest commit hash):
+
+```
+.{
+    .name = "mypkg",
+    .version = "0.1.0",
+    .dependencies = .{
+        .mach_earcut = .{
+            .url = "https://github.com/hexops/mach-earcut/archive/$LATEST_COMMIT.tar.gz",
+        },
+    },
 }
 ```
 
-Then in your `build.zig` add:
+Run `zig build` in your project, and the compiler instruct you to add a `.hash = "..."` field next to `.url`.
+
+Then use the dependency in your `build.zig`:
 
 ```zig
 ...
 pub fn build(b: *Build) void {
     ...
-    exe.addModule("earcut", b.dependency("mach_earcut", .{
+    exe.addModule("mach-earcut", b.dependency("mach_earcut", .{
         .target = target,
         .optimize = optimize,
     }).module("mach-earcut"));
 }
 ```
 
-For usage, see `src/main.zig` `test "basic"`.
+You may then `const earcut = @import("mach-earcut);` and use it.
+
+### Usage
+
+For usage, see `src/main.zig` (look for `test "basic"`)
 
 ## Join the community
 
