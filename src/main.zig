@@ -1,8 +1,6 @@
 const std = @import("std");
 const testing = std.testing;
 const sign = std.math.sign;
-const min = std.math.min;
-const max = std.math.max;
 const inf = std.math.inf;
 const Allocator = std.mem.Allocator;
 
@@ -70,7 +68,7 @@ pub fn Processor(comptime T: type) type {
                 }
 
                 // min_x, min_y and inv_size are later used to transform coords into integers for z-order calculation
-                inv_size = max(max_x - min_x, max_y - min_y);
+                inv_size = @max(max_x - min_x, max_y - min_y);
                 inv_size = if (inv_size != 0) 32767 / inv_size else 0;
             }
 
@@ -515,8 +513,8 @@ pub fn Processor(comptime T: type) type {
         /// z-order of a point given coords and inverse of the longer side of data bbox
         fn zOrder(x_in: T, y_in: T, min_x: T, min_y: T, inv_size: T) T {
             // coords are transformed into non-negative 15-bit integer range
-            var x = @floatToInt(i32, (x_in - min_x) * inv_size) | 0;
-            var y = @floatToInt(i32, (y_in - min_y) * inv_size) | 0;
+            var x = @intFromFloat(i32, (x_in - min_x) * inv_size) | 0;
+            var y = @intFromFloat(i32, (y_in - min_y) * inv_size) | 0;
 
             x = (x | (x << 8)) & 0x00FF00FF;
             x = (x | (x << 4)) & 0x0F0F0F0F;
@@ -528,7 +526,7 @@ pub fn Processor(comptime T: type) type {
             y = (y | (y << 2)) & 0x33333333;
             y = (y | (y << 1)) & 0x55555555;
 
-            return @intToFloat(T, x | (y << 1));
+            return @floatFromInt(T, x | (y << 1));
         }
 
         /// find the leftmost node of a polygon ring
@@ -589,7 +587,7 @@ pub fn Processor(comptime T: type) type {
 
         /// for collinear points p, q, r, check if point q lies on segment pr
         inline fn onSegment(p: *@This(), n: NodeIndex, q: NodeIndex, r: NodeIndex) bool {
-            return p.x[q] <= max(p.x[n], p.x[r]) and p.x[q] >= min(p.x[n], p.x[r]) and p.y[q] <= max(p.y[n], p.y[r]) and p.y[q] >= min(p.y[n], p.y[r]);
+            return p.x[q] <= @max(p.x[n], p.x[r]) and p.x[q] >= @min(p.x[n], p.x[r]) and p.y[q] <= @max(p.y[n], p.y[r]) and p.y[q] >= @min(p.y[n], p.y[r]);
         }
 
         /// check if a polygon diagonal intersects any polygon segments
