@@ -69,10 +69,6 @@ Join the Mach community [on Discord](https://discord.gg/XNG3NZgCqp) to discuss t
 
 Issues are tracked in the [main Mach repository](https://github.com/hexops/mach/issues?q=is%3Aissue+is%3Aopen+label%3Aearcut).
 
-## Contributing
-
-Contributions are very welcome. Pull requests must be sent to [the main repository](https://github.com/hexops/mach/tree/main/earcut) to avoid some complex merge conflicts we'd get by accepting contributions in both repositories. Once the changes are merged there, they'll get sync'd to this repository automatically.
-
 ## Version
 
 We currently reflect [this version](https://github.com/mapbox/earcut/tree/ae33a9fc9731c76519e66081995387e08d48eb65) of the upstream library.
