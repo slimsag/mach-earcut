@@ -35,7 +35,7 @@ pub fn Processor(comptime T: type) type {
             p.nodes.shrinkRetainingCapacity(0);
 
             var has_holes = hole_indices != null and hole_indices.?.len > 0;
-            var outer_len: u32 = if (has_holes) hole_indices.?[0] * dim else @intCast(u32, data.len);
+            var outer_len: u32 = if (has_holes) hole_indices.?[0] * dim else @as(u32, @intCast(data.len));
             var outer_node = try p.linkedList(allocator, data, 0, outer_len, dim, true);
 
             if (outer_node == null or p.next[outer_node.?] == p.prev[outer_node.?]) return;
@@ -51,7 +51,7 @@ pub fn Processor(comptime T: type) type {
             if (has_holes) outer_node = try p.eliminateHoles(allocator, data, hole_indices.?, outer_node, dim);
 
             // if the shape is not too simple, we'll use z-order curve hash later; calculate polygon bbox
-            if (data.len > 80 * @intCast(usize, dim)) {
+            if (data.len > 80 * @as(usize, @intCast(dim))) {
                 min_x = data[0];
                 max_x = data[0];
                 min_y = data[1];
@@ -333,7 +333,7 @@ pub fn Processor(comptime T: type) type {
             var len = hole_indices.len;
             while (i < len) : (i += 1) {
                 start = hole_indices[i] * dim;
-                end = if (i < len - 1) hole_indices[i + 1] * dim else @intCast(u32, data.len);
+                end = if (i < len - 1) hole_indices[i + 1] * dim else @as(u32, @intCast(data.len));
                 const list_maybe = try p.linkedList(allocator, data, start, end, dim, false);
                 const list = list_maybe.?; // TODO: if returns null, assertion would fail
                 if (list == p.next[list]) p.steiner[list] = true;
@@ -513,8 +513,8 @@ pub fn Processor(comptime T: type) type {
         /// z-order of a point given coords and inverse of the longer side of data bbox
         fn zOrder(x_in: T, y_in: T, min_x: T, min_y: T, inv_size: T) T {
             // coords are transformed into non-negative 15-bit integer range
-            var x = @intFromFloat(i32, (x_in - min_x) * inv_size) | 0;
-            var y = @intFromFloat(i32, (y_in - min_y) * inv_size) | 0;
+            var x = @as(i32, @intFromFloat((x_in - min_x) * inv_size)) | 0;
+            var y = @as(i32, @intFromFloat((y_in - min_y) * inv_size)) | 0;
 
             x = (x | (x << 8)) & 0x00FF00FF;
             x = (x | (x << 4)) & 0x0F0F0F0F;
@@ -526,7 +526,7 @@ pub fn Processor(comptime T: type) type {
             y = (y | (y << 2)) & 0x33333333;
             y = (y | (y << 1)) & 0x55555555;
 
-            return @floatFromInt(T, x | (y << 1));
+            return @as(T, @floatFromInt(x | (y << 1)));
         }
 
         /// find the leftmost node of a polygon ring
@@ -630,7 +630,7 @@ pub fn Processor(comptime T: type) type {
         /// polygon into two; if one belongs to the outer ring and another to a hole, it merges it
         /// into a single ring.
         fn splitPolygon(p: *@This(), allocator: Allocator, a: NodeIndex, b: NodeIndex) error{OutOfMemory}!NodeIndex {
-            var b2 = @intCast(NodeIndex, p.nodes.len + 1);
+            var b2 = @as(NodeIndex, @intCast(p.nodes.len + 1));
             var a2 = try p.initNode(allocator, .{ // a2
                 .i = p.i[a],
                 .x = p.x[a],
@@ -654,7 +654,7 @@ pub fn Processor(comptime T: type) type {
 
         /// create a node and optionally link it with previous one (in a circular doubly linked list)
         fn insertNode(p: *@This(), allocator: Allocator, i: u32, x: T, y: T, last: ?NodeIndex) error{OutOfMemory}!NodeIndex {
-            const new_node = @intCast(NodeIndex, p.nodes.len);
+            const new_node = @as(NodeIndex, @intCast(p.nodes.len));
             if (last) |l| {
                 _ = try p.initNode(allocator, .{
                     .i = i,
@@ -697,7 +697,7 @@ pub fn Processor(comptime T: type) type {
             p.prev_z = slice.items(.prev_z);
             p.next_z = slice.items(.next_z);
             p.steiner = slice.items(.steiner);
-            return @intCast(NodeIndex, p.nodes.len - 1);
+            return @as(NodeIndex, @intCast(p.nodes.len - 1));
         }
 
         const Node = struct {
