@@ -1,11 +1,11 @@
-<a href="https://machengine.org/pkg/mach-opus">
+<a href="https://machengine.org/pkg/mach-earcut">
     <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://machengine.org/assets/mach/opus-full-dark.svg">
-        <img alt="mach-opus" src="https://machengine.org/assets/mach/opus-full-light.svg" height="150px">
+        <source media="(prefers-color-scheme: dark)" srcset="https://machengine.org/assets/mach/earcut-full-dark.svg">
+        <img alt="mach-earcut" src="https://machengine.org/assets/mach/earcut-full-light.svg" height="150px">
     </picture>
 </a>
 
-Opus audio decoding and encoding for Zig via the battle-hardened xiph.org libopus / libopusfile
+Industrial-strength polygon triangulation for Zig 
 
 ## Experimental
 
@@ -13,16 +13,11 @@ This is an **experimental** project according to [our stability guarantees](http
 
 > When a project has an experimental warning, it means all bets are off. You should carefully read the warning to understand why the project is experimental, and assume the worst.
 
-**Tracking issue:** https://github.com/hexops/mach/issues/961
-
-## Features
-
-* Zero-fuss installation, cross-compilation at the flip of switch.
-* Encoding & decoding support
+**Tracking issue:** https://github.com/hexops/mach/issues/967
 
 ## Documentation
 
-[machengine.org/pkg/mach-opus](https://machengine.org/pkg/mach-opus)
+[machengine.org/pkg/mach-earcut](https://machengine.org/pkg/mach-earcut)
 
 ## Join the community
 
@@ -30,4 +25,4 @@ Join the [Mach community on Discord](https://discord.gg/XNG3NZgCqp) to discuss t
 
 ## Issues
 
-Issues are tracked in the [main Mach repository](https://github.com/hexops/mach/issues?q=is%3Aissue+is%3Aopen+label%3Aopus).
+Issues are tracked in the [main Mach repository](https://github.com/hexops/mach/issues?q=is%3Aissue+is%3Aopen+label%3Aearcut).
