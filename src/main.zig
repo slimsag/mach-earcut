@@ -411,7 +411,7 @@ pub fn Processor(comptime T: type) type {
                 if (hx >= p.x[n] and p.x[n] >= mx and hx != p.x[n] and
                     pointInTriangle(if (hy < my) hx else qx, hy, mx, my, if (hy < my) qx else hx, hy, p.x[n], p.y[n]))
                 {
-                    tan = @fabs(hy - p.y[n]) / (hx - p.x[n]); // tangential
+                    tan = @abs(hy - p.y[n]) / (hx - p.x[n]); // tangential
 
                     if (p.locallyInside(n, hole) and
                         (tan < tan_min or (tan == tan_min and (p.x[n] > p.x[m.?] or (p.x[n] == p.x[m.?] and p.sectorContainsSector(m.?, n))))))
